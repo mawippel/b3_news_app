@@ -71,17 +71,6 @@ class LoginPage extends StatelessWidget {
                   );
                 },
               ),
-              // CustomTextField(
-              //   labelText: 'Name',
-              //   onChange: mainStore.loginStore.setUsername,
-              //   errorText: mainStore.loginStore.validateUsername,
-              // ),
-              // const SizedBox(height: 20),
-              // CustomTextField(
-              //   labelText: 'Password',
-              //   onChange: mainStore.loginStore.setPassword,
-              //   errorText: mainStore.loginStore.validatePassword,
-              // ),
             ],
           ),
         ),
