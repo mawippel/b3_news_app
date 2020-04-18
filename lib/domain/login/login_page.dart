@@ -28,82 +28,90 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('assets/logo.png'),
-              const SizedBox(
-                height: 45,
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                child: CustomTextField(
-                  title: "Login",
-                  textInputAction: TextInputAction.next,
-                  focusNode: usernameFocus,
-                  keyboardType: TextInputType.text,
-                  controller: userController,
-                  onEditingComplete: passwordFocus.requestFocus,
-                  errorText: mainStore.loginStore.validateUsername,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset('assets/logo.png'),
+                const SizedBox(
+                  height: 45,
                 ),
-              ),
-              Observer(
-                builder: (_) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    child: CustomTextField(
-                      title: "Senha",
-                      textInputAction: TextInputAction.done,
-                      focusNode: passwordFocus,
-                      keyboardType: TextInputType.text,
-                      controller: passwordController,
-                      obscureText: mainStore.loginStore.obscurePassword,
-                      changeObscureText:
-                          mainStore.loginStore.changeObscurePassword,
-                      onEditingComplete: passwordFocus.unfocus,
-                      errorText: mainStore.loginStore.validatePassword,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Observer(
-                builder: (_) {
-                  return InkWell(
-                    onTap: mainStore.loginStore.isValid
-                        ? () => mainStore.authStore.isAuthenticated = true
-                        : null,
-                    child: Container(
-                      margin: const EdgeInsets.all(20),
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: mainStore.loginStore.isValid
-                            ? Theme.of(context).accentColor
-                            : Colors.grey,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
+                Observer(
+                  builder: (_) {
+                    return Column(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          child: CustomTextField(
+                            title: "Login",
+                            textInputAction: TextInputAction.next,
+                            focusNode: usernameFocus,
+                            keyboardType: TextInputType.text,
+                            controller: userController,
+                            value: mainStore.loginStore.username,
+                            onEditingComplete: passwordFocus.requestFocus,
+                            errorText: mainStore.loginStore.validateUsername,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 15,
+                          ),
+                          child: CustomTextField(
+                            title: "Senha",
+                            textInputAction: TextInputAction.done,
+                            focusNode: passwordFocus,
+                            keyboardType: TextInputType.text,
+                            controller: passwordController,
+                            value: mainStore.loginStore.password,
+                            obscureText: mainStore.loginStore.obscurePassword,
+                            changeObscureText:
+                                mainStore.loginStore.changeObscurePassword,
+                            onEditingComplete: passwordFocus.unfocus,
+                            errorText: mainStore.loginStore.validatePassword,
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Observer(
+                  builder: (_) {
+                    return InkWell(
+                      onTap: mainStore.loginStore.isValid
+                          ? () => mainStore.authStore.isAuthenticated = true
+                          : null,
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: mainStore.loginStore.isValid
+                              ? Theme.of(context).accentColor
+                              : Colors.grey,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              )
-            ],
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

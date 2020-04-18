@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText,
     this.changeObscureText,
     this.errorText,
+    this.value,
     Key key,
   }) : super(key: key);
 
@@ -23,6 +24,8 @@ class CustomTextField extends StatelessWidget {
   final Function changeObscureText;
   final TextEditingController controller;
   final String Function() errorText;
+  // Field used only to rebuild this component
+  final String value;
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -34,7 +37,7 @@ class CustomTextField extends StatelessWidget {
             keyboardType: keyboardType,
             textInputAction: textInputAction,
             controller: controller,
-            decoration: CustomInputDecoration(title: title),
+            decoration: CustomInputDecoration(title: title, errorText: errorText()),
             onEditingComplete: onEditingComplete,
             obscureText: obscureText ?? false,
           ),
@@ -59,16 +62,16 @@ class CustomTextField extends StatelessWidget {
 class CustomInputDecoration extends InputDecoration {
   const CustomInputDecoration({
     this.title,
+    this.errorText,
   }) : super(
           labelText: "$title",
           labelStyle: const TextStyle(
             color: Colors.white,
             fontSize: 16,
           ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
+          errorText: errorText == null ? '' : errorText,
         );
 
   final String title;
+  final String errorText;
 }
