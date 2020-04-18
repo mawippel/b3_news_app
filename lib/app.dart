@@ -1,6 +1,7 @@
 import 'package:b3_news_app/shared/providers/http_client.dart';
 import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:b3_news_app/utils/routes.dart';
+import 'package:b3_news_app/utils/theme.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -22,11 +23,9 @@ class App extends StatelessWidget {
         handleTouth: true,
         dismissOtherOnShow: true,
         child: MaterialApp(
+          theme: basicTheme(),
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
           initialRoute: '/splash',
           navigatorKey: Get.key,
           routes: Routes.all(),

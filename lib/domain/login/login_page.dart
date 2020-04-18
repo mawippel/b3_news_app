@@ -3,6 +3,7 @@ import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage() {
@@ -71,35 +72,64 @@ class LoginPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              Observer(
+                builder: (_) {
+                  return InkWell(
+                    onTap: mainStore.loginStore.isValid
+                        ? () => mainStore.authStore.isAuthenticated = true
+                        : null,
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: mainStore.loginStore.isValid
+                            ? Theme.of(context).accentColor
+                            : Colors.grey,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Observer(
-        builder: (_) {
-          return InkWell(
-            onTap: mainStore.loginStore.isValid
-                ? () => mainStore.authStore.isAuthenticated = true
-                : null,
-            child: Container(
-              margin: const EdgeInsets.all(20),
-              height: MediaQuery.of(context).size.height * 0.1,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: mainStore.loginStore.isValid ? Colors.black : Colors.grey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Text(
-                "Login",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        child: FlatButton(
+          onPressed: null,
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                const TextSpan(
+                  text: 'Não possui login? ',
+                  style: TextStyle(fontSize: 18),
                 ),
-                textAlign: TextAlign.center,
-              ),
+                TextSpan(
+                  text: ' Crie sua conta!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).accentColor,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

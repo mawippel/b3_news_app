@@ -29,9 +29,6 @@ class CustomTextField extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: <Widget>[
           TextField(
-            style: const TextStyle(
-              color: Colors.black,
-            ),
             focusNode: focusNode,
             cursorColor: Colors.grey,
             keyboardType: keyboardType,
@@ -48,7 +45,7 @@ class CustomTextField extends StatelessWidget {
                 onTap: changeObscureText,
                 child: Icon(
                   obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: 20,
                 ),
               ),
@@ -65,17 +62,11 @@ class CustomInputDecoration extends InputDecoration {
   }) : super(
           labelText: "$title",
           labelStyle: const TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 16,
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
           ),
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
           ),
         );
 
