@@ -22,6 +22,7 @@ class App extends StatelessWidget {
         handleTouth: true,
         dismissOtherOnShow: true,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,

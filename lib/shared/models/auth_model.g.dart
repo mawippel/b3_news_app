@@ -12,8 +12,8 @@ class AuthModelAdapter extends TypeAdapter<AuthModel> {
 
   @override
   AuthModel read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AuthModel(

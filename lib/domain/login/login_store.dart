@@ -10,6 +10,9 @@ abstract class _LoginStoreBase with Store {
   @observable
   String password;
 
+  @observable
+  bool obscurePassword = true;
+
   @computed
   bool get isValid => validateUsername() == null && validatePassword() == null;
 
@@ -21,6 +24,11 @@ abstract class _LoginStoreBase with Store {
   @action
   void setPassword(String newValue) {
     password = newValue;
+  }
+
+  @action
+  void changeObscurePassword() {
+    obscurePassword = !obscurePassword;
   }
 
   String validateUsername() {

@@ -49,6 +49,23 @@ mixin _$LoginStore on _LoginStoreBase, Store {
     }, _$passwordAtom, name: '${_$passwordAtom.name}_set');
   }
 
+  final _$obscurePasswordAtom = Atom(name: '_LoginStoreBase.obscurePassword');
+
+  @override
+  bool get obscurePassword {
+    _$obscurePasswordAtom.context.enforceReadPolicy(_$obscurePasswordAtom);
+    _$obscurePasswordAtom.reportObserved();
+    return super.obscurePassword;
+  }
+
+  @override
+  set obscurePassword(bool value) {
+    _$obscurePasswordAtom.context.conditionallyRunInAction(() {
+      super.obscurePassword = value;
+      _$obscurePasswordAtom.reportChanged();
+    }, _$obscurePasswordAtom, name: '${_$obscurePasswordAtom.name}_set');
+  }
+
   final _$_LoginStoreBaseActionController =
       ActionController(name: '_LoginStoreBase');
 
@@ -73,9 +90,19 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   }
 
   @override
+  void changeObscurePassword() {
+    final _$actionInfo = _$_LoginStoreBaseActionController.startAction();
+    try {
+      return super.changeObscurePassword();
+    } finally {
+      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'username: ${username.toString()},password: ${password.toString()},isValid: ${isValid.toString()}';
+        'username: ${username.toString()},password: ${password.toString()},obscurePassword: ${obscurePassword.toString()},isValid: ${isValid.toString()}';
     return '{$string}';
   }
 }
