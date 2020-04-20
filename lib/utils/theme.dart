@@ -26,5 +26,7 @@ ThemeData basicTheme() {
   return base.copyWith(
     textTheme: _basicTextTheme(base.textTheme),
     primaryColor: Colors.white,
+    accentColor: const Color.fromRGBO(253, 234, 160, 1),
+    scaffoldBackgroundColor: const Color.fromRGBO(15, 34, 45, 1),
   );
 }
