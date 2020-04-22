@@ -1,5 +1,6 @@
 import 'package:b3_news_app/components/custom_text_field.dart';
 import 'package:b3_news_app/domain/login/login_page.dart';
+import 'package:b3_news_app/shared/services/authentication_service.dart';
 import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -48,7 +49,7 @@ class RegisterPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 30, vertical: 15),
                           child: CustomTextField(
-                            title: "Usuário",
+                            title: "E-mail",
                             textInputAction: TextInputAction.next,
                             focusNode: usernameFocus,
                             keyboardType: TextInputType.text,
@@ -88,7 +89,10 @@ class RegisterPage extends StatelessWidget {
                   builder: (_) {
                     return InkWell(
                       onTap: mainStore.registerStore.isValid
-                          ? () => mainStore.authStore.isAuthenticated = true
+                          ? () => AuthenticationService.signUpWithEmail(
+                                email: mainStore.registerStore.username,
+                                password: mainStore.registerStore.password,
+                              )
                           : null,
                       child: Container(
                         margin: const EdgeInsets.all(20),

@@ -14,9 +14,9 @@ abstract class _AuthStoreBase with Store {
       (isAuthenticated) async {
         if (isAuthenticated) {
           await AuthService.saveNewToken();
-          await Get.offNamed(HomePage.name);
+          await Get.offNamedUntil(HomePage.name, (_) => false);
         } else {
-          await Get.offNamed(LoginPage.name);
+          await Get.offNamedUntil(LoginPage.name, (_) => false);
         }
       },
     );
