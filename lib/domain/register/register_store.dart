@@ -33,17 +33,17 @@ abstract class _RegisterStoreBase with Store {
 
   String validateUsername() {
     if (username == null || username.isEmpty) {
-      return 'Required';
+      return 'Obrigatório';
     }
     return null;
   }
 
   String validatePassword() {
     if (password == null || password.isEmpty) {
-      return 'Required';
+      return 'Obrigatório';
     }
     if (password.length < 8) {
-      return 'Password must have more than 8 chars';
+      return 'Sua senha deve possuir mais que 8 caracteres';
     }
     return null;
   }

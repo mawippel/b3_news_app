@@ -1,9 +1,10 @@
 import 'package:b3_news_app/components/custom_text_field.dart';
+import 'package:b3_news_app/domain/register/register_page.dart';
 import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage() {
@@ -17,6 +18,7 @@ class LoginPage extends StatelessWidget {
   }
 
   static const String name = '/login';
+
   final mainStore = GetIt.I.get<MainStore>();
   final TextEditingController userController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -46,7 +48,7 @@ class LoginPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 30, vertical: 15),
                           child: CustomTextField(
-                            title: "Login",
+                            title: "Usuário",
                             textInputAction: TextInputAction.next,
                             focusNode: usernameFocus,
                             keyboardType: TextInputType.text,
@@ -99,7 +101,7 @@ class LoginPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: const Text(
-                          "Login",
+                          "Entrar",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,
@@ -118,7 +120,7 @@ class LoginPage extends StatelessWidget {
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(bottom: 10),
         child: FlatButton(
-          onPressed: null,
+          onPressed: () => Get.offNamed(RegisterPage.name),
           child: RichText(
             text: TextSpan(
               children: <TextSpan>[

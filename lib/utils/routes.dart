@@ -8,7 +8,7 @@ class Routes {
 
   static Map<String, Widget Function(BuildContext)> all() => {
     LoginPage.name: (_) => LoginPage(),
-    RegisterPage.name: (_) => const RegisterPage(),
+    RegisterPage.name: (_) => RegisterPage(),
     HomePage.name: (_) => const HomePage(),
     SplashPage.name: (_) => const SplashPage(),
   };
