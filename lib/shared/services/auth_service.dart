@@ -6,4 +6,9 @@ class AuthService {
     final box = await HiveService.openBox('authBox');
     await box.put('access_token', '1bjawef24623423hasd1BafJGF4123');
   }
+
+  static Future removeToken() async {
+    final box = await HiveService.openBox('authBox');
+    await box.delete('access_token');
+  }
 }

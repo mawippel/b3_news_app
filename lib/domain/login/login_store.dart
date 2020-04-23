@@ -5,20 +5,23 @@ class LoginStore = _LoginStoreBase with _$LoginStore;
 
 abstract class _LoginStoreBase with Store {
   @observable
-  String username;
+  String email;
 
   @observable
   String password;
 
   @observable
+  bool isLoading = false;
+
+  @observable
   bool obscurePassword = true;
 
   @computed
-  bool get isValid => validateUsername() == null && validatePassword() == null;
+  bool get isValid => validateEmail() == null && validatePassword() == null;
 
   @action
-  void setUsername(String newValue) {
-    username = newValue;
+  void setEmail(String newValue) {
+    email = newValue;
   }
 
   @action
@@ -31,9 +34,12 @@ abstract class _LoginStoreBase with Store {
     obscurePassword = !obscurePassword;
   }
 
-  String validateUsername() {
-    if (username == null || username.isEmpty) {
+  String validateEmail() {
+    if (email == null || email.isEmpty) {
       return 'Obrigatório';
+    }
+    if(!_isEmailValid(email)){
+      return 'Email com formato inválido';
     }
     return null;
   }
@@ -46,5 +52,11 @@ abstract class _LoginStoreBase with Store {
       return 'Sua senha deve possuir mais que 8 caracteres';
     }
     return null;
+  }
+
+  bool _isEmailValid(String email) {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
   }
 }

@@ -15,21 +15,21 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   bool get isValid =>
       (_$isValidComputed ??= Computed<bool>(() => super.isValid)).value;
 
-  final _$usernameAtom = Atom(name: '_LoginStoreBase.username');
+  final _$emailAtom = Atom(name: '_LoginStoreBase.email');
 
   @override
-  String get username {
-    _$usernameAtom.context.enforceReadPolicy(_$usernameAtom);
-    _$usernameAtom.reportObserved();
-    return super.username;
+  String get email {
+    _$emailAtom.context.enforceReadPolicy(_$emailAtom);
+    _$emailAtom.reportObserved();
+    return super.email;
   }
 
   @override
-  set username(String value) {
-    _$usernameAtom.context.conditionallyRunInAction(() {
-      super.username = value;
-      _$usernameAtom.reportChanged();
-    }, _$usernameAtom, name: '${_$usernameAtom.name}_set');
+  set email(String value) {
+    _$emailAtom.context.conditionallyRunInAction(() {
+      super.email = value;
+      _$emailAtom.reportChanged();
+    }, _$emailAtom, name: '${_$emailAtom.name}_set');
   }
 
   final _$passwordAtom = Atom(name: '_LoginStoreBase.password');
@@ -47,6 +47,23 @@ mixin _$LoginStore on _LoginStoreBase, Store {
       super.password = value;
       _$passwordAtom.reportChanged();
     }, _$passwordAtom, name: '${_$passwordAtom.name}_set');
+  }
+
+  final _$isLoadingAtom = Atom(name: '_LoginStoreBase.isLoading');
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
+    _$isLoadingAtom.reportObserved();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.context.conditionallyRunInAction(() {
+      super.isLoading = value;
+      _$isLoadingAtom.reportChanged();
+    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
   }
 
   final _$obscurePasswordAtom = Atom(name: '_LoginStoreBase.obscurePassword');
@@ -70,10 +87,10 @@ mixin _$LoginStore on _LoginStoreBase, Store {
       ActionController(name: '_LoginStoreBase');
 
   @override
-  void setUsername(String newValue) {
+  void setEmail(String newValue) {
     final _$actionInfo = _$_LoginStoreBaseActionController.startAction();
     try {
-      return super.setUsername(newValue);
+      return super.setEmail(newValue);
     } finally {
       _$_LoginStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -102,7 +119,7 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   @override
   String toString() {
     final string =
-        'username: ${username.toString()},password: ${password.toString()},obscurePassword: ${obscurePassword.toString()},isValid: ${isValid.toString()}';
+        'email: ${email.toString()},password: ${password.toString()},isLoading: ${isLoading.toString()},obscurePassword: ${obscurePassword.toString()},isValid: ${isValid.toString()}';
     return '{$string}';
   }
 }

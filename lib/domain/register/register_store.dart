@@ -5,20 +5,23 @@ class RegisterStore = _RegisterStoreBase with _$RegisterStore;
 
 abstract class _RegisterStoreBase with Store {
   @observable
-  String username;
+  String email;
 
   @observable
   String password;
 
   @observable
+  bool isLoading = false;
+
+  @observable
   bool obscurePassword = true;
 
   @computed
-  bool get isValid => validateUsername() == null && validatePassword() == null;
+  bool get isValid => validateEmail() == null && validatePassword() == null;
 
   @action
-  void setUsername(String newValue) {
-    username = newValue;
+  void setEmail(String newValue) {
+    email = newValue;
   }
 
   @action
@@ -31,8 +34,8 @@ abstract class _RegisterStoreBase with Store {
     obscurePassword = !obscurePassword;
   }
 
-  String validateUsername() {
-    if (username == null || username.isEmpty) {
+  String validateEmail() {
+    if (email == null || email.isEmpty) {
       return 'Obrigatório';
     }
     return null;
