@@ -1,0 +1,3 @@
+enum Sentiment {
+  POSITIVE, NEGATIVE, MIXED, NEUTRAL
+}
