@@ -1,3 +1,4 @@
+import 'package:b3_news_app/domain/news_detail/news_detail_page.dart';
 import 'package:b3_news_app/shared/models/news_model.dart';
 import 'package:b3_news_app/shared/models/sentiment.dart';
 import 'package:b3_news_app/shared/services/authentication_service.dart';
@@ -5,6 +6,7 @@ import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:b3_news_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -65,7 +67,7 @@ class HomePage extends StatelessWidget {
 
     Widget _buildListItem(NewsModel news) {
       return InkWell(
-        onTap: () => print('xd'),
+        onTap: () => Get.to(NewsDetailPage(news.id)),
         splashColor: B3NewsColors.lightYellow,
         child: Column(
           children: <Widget>[
