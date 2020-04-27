@@ -1,3 +1,4 @@
+import 'package:b3_news_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData basicTheme() {
@@ -35,8 +36,8 @@ ThemeData basicTheme() {
   final base = ThemeData.dark();
   return base.copyWith(
     textTheme: _basicTextTheme(base.textTheme),
-    primaryColor: const Color.fromRGBO(15, 34, 45, 1),
-    accentColor: const Color.fromRGBO(253, 234, 160, 1),
-    scaffoldBackgroundColor: const Color.fromRGBO(15, 34, 45, 1),
+    primaryColor: B3NewsColors.primaryBlue,
+    accentColor: B3NewsColors.lightYellow,
+    scaffoldBackgroundColor: B3NewsColors.primaryBlue,
   );
 }
