@@ -1,3 +1,5 @@
+import 'package:b3_news_app/components/sentiment_label_builder.dart';
+import 'package:b3_news_app/domain/home/home_page.dart';
 import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -16,24 +18,44 @@ class NewsDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('InfoMoney'),
-      ),
-      body: Observer(
-        builder: (_) {
-          return ModalProgressHUD(
+    Widget _buildContent() {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            Text(
+              mainStore.newsDetailStore.news.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Observer(
+      builder: (_) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const Text('InfoMoney'),
+                SentimentLabelBuilder.buildSentimentLabel(
+                    mainStore.newsDetailStore.news.sentiment),
+              ],
+            ),
+          ),
+          body: ModalProgressHUD(
             opacity: 0.1,
             color: const Color.fromRGBO(253, 234, 160, 1),
             inAsyncCall: mainStore.newsDetailStore.isLoading,
             child: mainStore.newsDetailStore.isLoading
                 ? Container()
-                : Center(
-                    child: Text(mainStore.newsDetailStore.news?.id ?? ''),
-                  ),
-          );
-        },
-      ),
+                : _buildContent(),
+          ),
+        );
+      },
     );
   }
 }
