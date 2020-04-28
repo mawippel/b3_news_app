@@ -9,4 +9,9 @@ class HomeService {
         .map<NewsModel>((news) => NewsModel.fromJson(news))
         .toList();
   }
+
+  static Future<NewsModel> findNewsById(String newsId) async {
+    final Response response = await HomeRepository().findNewsById(newsId);
+    return NewsModel.fromJson(response.data);
+  }
 }

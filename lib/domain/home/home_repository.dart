@@ -9,4 +9,6 @@ class HomeRepository extends AbstractRepository {
   static final HomeRepository _singleton = HomeRepository._internal();
 
   Future fetchNews() async => httpClient.get('/news');
+
+  Future findNewsById(String newsId) async => httpClient.get('/news/$newsId');
 }
