@@ -46,8 +46,9 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   final _$fetchNewsAsyncAction = AsyncAction('fetchNews');
 
   @override
-  Future<dynamic> fetchNews() {
-    return _$fetchNewsAsyncAction.run(() => super.fetchNews());
+  Future<dynamic> fetchNews({bool displayLoading}) {
+    return _$fetchNewsAsyncAction
+        .run(() => super.fetchNews(displayLoading: displayLoading));
   }
 
   final _$_HomeStoreBaseActionController =
@@ -58,6 +59,16 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction();
     try {
       return super.addNews(news);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void emptyNews() {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction();
+    try {
+      return super.emptyNews();
     } finally {
       _$_HomeStoreBaseActionController.endAction(_$actionInfo);
     }

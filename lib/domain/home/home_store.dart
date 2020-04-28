@@ -20,8 +20,15 @@ abstract class _HomeStoreBase with Store {
   }
 
   @action
-  Future fetchNews() async {
-    isLoading = true;
+  void emptyNews() {
+    news.clear();
+  }
+
+  @action
+  Future fetchNews({bool displayLoading}) async {
+    if (displayLoading) {
+      isLoading = true;
+    }
     try {
       final serverNews = await HomeService.fetchNews();
       serverNews.forEach(addNews);

@@ -12,7 +12,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class HomePage extends StatelessWidget {
   HomePage() {
-    mainStore.homeStore.fetchNews();
+    mainStore.homeStore.fetchNews(displayLoading: true);
   }
 
   final mainStore = GetIt.I.get<MainStore>();
@@ -138,11 +138,17 @@ class HomePage extends StatelessWidget {
             opacity: 0.1,
             color: const Color.fromRGBO(253, 234, 160, 1),
             inAsyncCall: mainStore.homeStore.isLoading,
-            child: ListView.builder(
-              itemCount: mainStore.homeStore.news.length,
-              itemBuilder: (context, index) {
-                return _buildListItem(mainStore.homeStore.news[index]);
+            child: RefreshIndicator(
+              onRefresh: () {
+                mainStore.homeStore.emptyNews();
+                return mainStore.homeStore.fetchNews(displayLoading: false);
               },
+              child: ListView.builder(
+                itemCount: mainStore.homeStore.news.length,
+                itemBuilder: (context, index) {
+                  return _buildListItem(mainStore.homeStore.news[index]);
+                },
+              ),
             ),
           );
         },
