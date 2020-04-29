@@ -21,10 +21,16 @@ NewsModel _$NewsModelFromJson(Map<String, dynamic> json) {
     sentiment: _$enumDecodeNullable(_$SentimentEnumMap, json['sentiment']),
     websiteName: json['websiteName'] as String,
     websitePhoto: json['websitePhoto'] as String,
-  )..paragraphs = (json['paragraphs'] as List)
-      ?.map((e) =>
-          e == null ? null : ParagraphModel.fromJson(e as Map<String, dynamic>))
-      ?.toList();
+  )
+    ..paragraphs = (json['paragraphs'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ParagraphModel.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..stocks = (json['stocks'] as List)
+        ?.map((e) =>
+            e == null ? null : StockModel.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$NewsModelToJson(NewsModel instance) => <String, dynamic>{
@@ -40,6 +46,7 @@ Map<String, dynamic> _$NewsModelToJson(NewsModel instance) => <String, dynamic>{
       'websiteName': instance.websiteName,
       'websitePhoto': instance.websitePhoto,
       'paragraphs': instance.paragraphs,
+      'stocks': instance.stocks,
     };
 
 T _$enumDecode<T>(

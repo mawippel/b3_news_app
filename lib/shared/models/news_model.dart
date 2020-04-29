@@ -1,5 +1,6 @@
 import 'package:b3_news_app/shared/models/paragraph_model.dart';
 import 'package:b3_news_app/shared/models/sentiment.dart';
+import 'package:b3_news_app/shared/models/stock_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'news_model.g.dart';
 
@@ -34,6 +35,7 @@ class NewsModel {
   String websiteName;
   String websitePhoto;
   List<ParagraphModel> paragraphs;
+  List<StockModel> stocks;
 
   Map<String, dynamic> toJson() => _$NewsModelToJson(this);
 }
