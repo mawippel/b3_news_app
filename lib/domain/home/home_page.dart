@@ -89,7 +89,8 @@ class HomePage extends StatelessWidget {
                                 news.websiteName,
                                 style: const TextStyle(fontSize: 17),
                               ),
-                              SentimentLabelBuilder.buildSentimentLabel(news.sentiment),
+                              SentimentLabelBuilder.buildSentimentLabel(
+                                  news.sentiment),
                             ],
                           ),
                           Text(
@@ -111,8 +112,17 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Últimas Notícias'),
-      ),
+          title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          const Text('Últimas Notícias'),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+            color: B3NewsColors.lightYellow,
+          )
+        ],
+      )),
       drawer: _buildDrawer(),
       body: Observer(
         builder: (_) {

@@ -2,15 +2,14 @@ import 'package:b3_news_app/components/ticker_symbol_builder.dart';
 import 'package:b3_news_app/shared/models/sentiment.dart';
 import 'package:b3_news_app/utils/colors.dart';
 import 'package:collection/collection.dart';
-import 'package:b3_news_app/components/sentiment_label_builder.dart';
 import 'package:b3_news_app/domain/news_detail/chart_data_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailPage extends StatelessWidget {
   NewsDetailPage(this.id) {
@@ -22,21 +21,13 @@ class NewsDetailPage extends StatelessWidget {
 
   static const String name = '/home';
 
-  final List<CircularStackEntry> data = <CircularStackEntry>[
-    CircularStackEntry(
-      <CircularSegmentEntry>[
-        CircularSegmentEntry(50, Colors.green, rankKey: 'POSITIVE'),
-        CircularSegmentEntry(50, Colors.red, rankKey: 'NEGATIVE'),
-      ],
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     List<ChartDataModel> _getChartValues() {
       final map = groupBy(mainStore.newsDetailStore.news.paragraphs,
           (paragraph) => paragraph.sentiment);
       final paragraphsLength = mainStore.newsDetailStore.news.paragraphs.length;
+
       return [
         if (map[Sentiment.POSITIVE]?.isNotEmpty ?? false)
           ChartDataModel(
@@ -132,6 +123,14 @@ class NewsDetailPage extends StatelessWidget {
       );
     }
 
+    Future _launchURL(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+
     return Observer(
       builder: (_) {
         return Scaffold(
@@ -140,9 +139,25 @@ class NewsDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 const Text('InfoMoney'),
-                if (!mainStore.newsDetailStore.isLoading)
-                  SentimentLabelBuilder.buildSentimentLabel(
-                      mainStore.newsDetailStore.news?.sentiment),
+                FlatButton(
+                  onPressed: () => _launchURL(mainStore.newsDetailStore.news.href),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.link,
+                        color: B3NewsColors.lightYellow,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Leia na Íntegra',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: B3NewsColors.lightYellow),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
