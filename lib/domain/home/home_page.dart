@@ -1,7 +1,6 @@
 import 'package:b3_news_app/components/sentiment_label_builder.dart';
 import 'package:b3_news_app/domain/news_detail/news_detail_page.dart';
 import 'package:b3_news_app/shared/models/news_model.dart';
-import 'package:b3_news_app/shared/models/sentiment.dart';
 import 'package:b3_news_app/shared/services/authentication_service.dart';
 import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:b3_news_app/utils/colors.dart';
@@ -14,11 +13,16 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 class HomePage extends StatelessWidget {
   HomePage() {
     mainStore.homeStore.fetchNews(displayLoading: true);
+
+    searchBarController.addListener(() {
+      mainStore.homeStore.filterNews(searchBarController.text);
+    });
   }
 
-  final mainStore = GetIt.I.get<MainStore>();
-
   static const String name = '/home';
+
+  final mainStore = GetIt.I.get<MainStore>();
+  final TextEditingController searchBarController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -112,17 +116,41 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const Text('Últimas Notícias'),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
-            color: B3NewsColors.lightYellow,
-          )
-        ],
-      )),
+        title: Observer(
+          builder: (_) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                if (mainStore.homeStore.isSearching)
+                  Expanded(
+                    flex: 1,
+                    child: TextField(
+                      controller: searchBarController,
+                      decoration: InputDecoration(
+                        prefixIcon: IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            searchBarController.clear();
+                            mainStore.homeStore.clearSearchFilter();
+                          },
+                        ),
+                        hintText: 'Pesquise pela Notícia ou Papel...',
+                      ),
+                    ),
+                  ),
+                if (!mainStore.homeStore.isSearching)
+                  const Text('Últimas Notícias'),
+                if (!mainStore.homeStore.isSearching)
+                  IconButton(
+                    onPressed: () => mainStore.homeStore.isSearching = true,
+                    icon: Icon(Icons.search),
+                    color: B3NewsColors.lightYellow,
+                  )
+              ],
+            );
+          },
+        ),
+      ),
       drawer: _buildDrawer(),
       body: Observer(
         builder: (_) {
@@ -136,9 +164,10 @@ class HomePage extends StatelessWidget {
                 return mainStore.homeStore.fetchNews(displayLoading: false);
               },
               child: ListView.builder(
-                itemCount: mainStore.homeStore.news.length,
+                itemCount: mainStore.homeStore.searchableNews.length,
                 itemBuilder: (context, index) {
-                  return _buildListItem(mainStore.homeStore.news[index]);
+                  return _buildListItem(
+                      mainStore.homeStore.searchableNews[index]);
                 },
               ),
             ),

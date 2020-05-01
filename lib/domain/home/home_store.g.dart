@@ -26,6 +26,23 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     }, _$newsAtom, name: '${_$newsAtom.name}_set');
   }
 
+  final _$searchableNewsAtom = Atom(name: '_HomeStoreBase.searchableNews');
+
+  @override
+  ObservableList<NewsModel> get searchableNews {
+    _$searchableNewsAtom.context.enforceReadPolicy(_$searchableNewsAtom);
+    _$searchableNewsAtom.reportObserved();
+    return super.searchableNews;
+  }
+
+  @override
+  set searchableNews(ObservableList<NewsModel> value) {
+    _$searchableNewsAtom.context.conditionallyRunInAction(() {
+      super.searchableNews = value;
+      _$searchableNewsAtom.reportChanged();
+    }, _$searchableNewsAtom, name: '${_$searchableNewsAtom.name}_set');
+  }
+
   final _$isLoadingAtom = Atom(name: '_HomeStoreBase.isLoading');
 
   @override
@@ -43,6 +60,23 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
   }
 
+  final _$isSearchingAtom = Atom(name: '_HomeStoreBase.isSearching');
+
+  @override
+  bool get isSearching {
+    _$isSearchingAtom.context.enforceReadPolicy(_$isSearchingAtom);
+    _$isSearchingAtom.reportObserved();
+    return super.isSearching;
+  }
+
+  @override
+  set isSearching(bool value) {
+    _$isSearchingAtom.context.conditionallyRunInAction(() {
+      super.isSearching = value;
+      _$isSearchingAtom.reportChanged();
+    }, _$isSearchingAtom, name: '${_$isSearchingAtom.name}_set');
+  }
+
   final _$fetchNewsAsyncAction = AsyncAction('fetchNews');
 
   @override
@@ -53,6 +87,26 @@ mixin _$HomeStore on _HomeStoreBase, Store {
 
   final _$_HomeStoreBaseActionController =
       ActionController(name: '_HomeStoreBase');
+
+  @override
+  void filterNews(String text) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction();
+    try {
+      return super.filterNews(text);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clearSearchFilter() {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction();
+    try {
+      return super.clearSearchFilter();
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void addNews(NewsModel news) {
@@ -77,7 +131,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   @override
   String toString() {
     final string =
-        'news: ${news.toString()},isLoading: ${isLoading.toString()}';
+        'news: ${news.toString()},searchableNews: ${searchableNews.toString()},isLoading: ${isLoading.toString()},isSearching: ${isSearching.toString()}';
     return '{$string}';
   }
 }

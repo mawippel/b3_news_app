@@ -12,16 +12,52 @@ abstract class _HomeStoreBase with Store {
   ObservableList<NewsModel> news = <NewsModel>[].asObservable();
 
   @observable
+  ObservableList<NewsModel> searchableNews = <NewsModel>[].asObservable();
+
+  @observable
   bool isLoading;
+
+  @observable
+  bool isSearching = false;
+
+  @action
+  void filterNews(String text) {
+    if (text == null || text.length < 3) return;
+
+    isLoading = true;
+    searchableNews.clear();
+    for (final n in news) {
+      for (final stock in n.stocks) {
+        if (stock.ticker.contains(text.toUpperCase())) {
+          searchableNews.add(n);
+        }
+      }
+
+      if (n.title.toUpperCase().contains(text.toUpperCase()) ||
+          n.websiteName.toUpperCase().contains(text.toUpperCase())) {
+        searchableNews.add(n);
+      }
+    }
+    isLoading = false;
+  }
+
+  @action
+  void clearSearchFilter() {
+    searchableNews.clear();
+    news.forEach(searchableNews.add);
+    isSearching = false;
+  }
 
   @action
   void addNews(NewsModel news) {
     this.news.add(news);
+    searchableNews.add(news);
   }
 
   @action
   void emptyNews() {
     news.clear();
+    searchableNews.clear();
   }
 
   @action
