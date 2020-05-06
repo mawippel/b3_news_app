@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class HomePage extends StatelessWidget {
@@ -58,7 +59,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              height: 100,
+              height: 120,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,6 +96,10 @@ class HomePage extends StatelessWidget {
                               ),
                               SentimentLabelBuilder.buildSentimentLabel(
                                   news.sentiment),
+                              Text(
+                                DateFormat.Hm().format(news.createdAt),
+                                style: const TextStyle(fontSize: 17),
+                              ),
                             ],
                           ),
                           Text(
@@ -109,6 +114,39 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const Divider(),
+          ],
+        ),
+      );
+    }
+
+    Widget _buildDateDivider(DateTime date) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                const Expanded(
+                  flex: 5,
+                  child: Divider(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    DateFormat('dd/MM/yyyy').format(date),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: B3NewsColors.lightYellow,
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  child: Divider(),
+                ),
+              ],
+            ),
+            for (final n in mainStore.homeStore.getSortedNewsByDate(date))
+              _buildListItem(n)
           ],
         ),
       );
@@ -164,10 +202,11 @@ class HomePage extends StatelessWidget {
                 return mainStore.homeStore.fetchNews(displayLoading: false);
               },
               child: ListView.builder(
-                itemCount: mainStore.homeStore.searchableNews.length,
+                itemCount: mainStore.homeStore.newsMap.keys.toList().length,
                 itemBuilder: (context, index) {
-                  return _buildListItem(
-                      mainStore.homeStore.searchableNews[index]);
+                  final mapKeys = mainStore.homeStore.newsMap.keys.toList()
+                    ..sort((b, a) => a.compareTo(b));
+                  return _buildDateDivider(mapKeys[index]);
                 },
               ),
             ),

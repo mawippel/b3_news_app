@@ -8,6 +8,7 @@ import 'package:b3_news_app/shared/stores/main_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,6 +70,14 @@ class NewsDetailPage extends StatelessWidget {
               mainStore.newsDetailStore.news.title,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(DateFormat("dd 'de' MMM y, HH:mm")
+                    .format(mainStore.newsDetailStore.news.createdAt))
+              ],
             ),
             const SizedBox(height: 15),
             const Divider(),
@@ -140,7 +149,8 @@ class NewsDetailPage extends StatelessWidget {
               children: <Widget>[
                 const Text('InfoMoney'),
                 FlatButton(
-                  onPressed: () => _launchURL(mainStore.newsDetailStore.news.href),
+                  onPressed: () =>
+                      _launchURL(mainStore.newsDetailStore.news.href),
                   child: Row(
                     children: <Widget>[
                       Icon(

@@ -1,6 +1,8 @@
+import "package:collection/collection.dart";
 import 'package:b3_news_app/domain/home/home_service.dart';
 import 'package:b3_news_app/shared/handlers/dio_error_handler.dart';
 import 'package:b3_news_app/shared/models/news_model.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
 part 'home_store.g.dart';
@@ -15,10 +17,17 @@ abstract class _HomeStoreBase with Store {
   ObservableList<NewsModel> searchableNews = <NewsModel>[].asObservable();
 
   @observable
+  ObservableMap<DateTime, List<NewsModel>> newsMap = ObservableMap.of({});
+
+  @observable
   bool isLoading;
 
   @observable
   bool isSearching = false;
+
+  List<NewsModel> getSortedNewsByDate(DateTime date) {
+    return newsMap[date]..sort((b, a) => a.createdAt.compareTo(b.createdAt));
+  }
 
   @action
   void filterNews(String text) {
@@ -68,6 +77,12 @@ abstract class _HomeStoreBase with Store {
     try {
       final serverNews = await HomeService.fetchNews();
       serverNews.forEach(addNews);
+
+      final newMap = groupBy(
+          serverNews,
+          (obj) => DateFormat('dd/MM/yyyy')
+              .parse(DateFormat('dd/MM/yyyy').format(obj.createdAt)));
+      newsMap.addAll(newMap);
     } catch (e) {
       DioErrorHandler.handle(e);
     } finally {
