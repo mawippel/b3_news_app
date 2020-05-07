@@ -75,7 +75,7 @@ class NewsDetailPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(DateFormat("dd 'de' MMM y, HH:mm")
+                Text(DateFormat("dd 'de' MMMM y, HH:mm", 'pt_BR')
                     .format(mainStore.newsDetailStore.news.createdAt))
               ],
             ),
