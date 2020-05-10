@@ -127,17 +127,23 @@ class HomePage extends StatelessWidget {
             Row(
               children: <Widget>[
                 const Expanded(
-                  flex: 5,
+                  flex: 4,
                   child: Divider(),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    DateFormat('dd/MM/yyyy').format(date),
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: B3NewsColors.lightYellow,
-                    ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.calendar_today,
+                          color: B3NewsColors.lightYellow),
+                      const SizedBox(width: 4),
+                      Text(
+                        DateFormat('dd/MM/yyyy').format(date),
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const Expanded(

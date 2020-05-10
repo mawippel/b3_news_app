@@ -1,6 +1,7 @@
 import 'package:b3_news_app/components/ticker_symbol_builder.dart';
 import 'package:b3_news_app/shared/models/sentiment.dart';
 import 'package:b3_news_app/utils/colors.dart';
+import 'package:b3_news_app/utils/url_launcher.dart';
 import 'package:collection/collection.dart';
 import 'package:b3_news_app/domain/news_detail/chart_data_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -132,14 +133,6 @@ class NewsDetailPage extends StatelessWidget {
       );
     }
 
-    Future _launchURL(String url) async {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    }
-
     return Observer(
       builder: (_) {
         return Scaffold(
@@ -150,7 +143,7 @@ class NewsDetailPage extends StatelessWidget {
                 const Text('InfoMoney'),
                 FlatButton(
                   onPressed: () =>
-                      _launchURL(mainStore.newsDetailStore.news.href),
+                      URLLauncher.launchURL(mainStore.newsDetailStore.news.href),
                   child: Row(
                     children: <Widget>[
                       Icon(
