@@ -11,13 +11,13 @@ class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
   @observable
-  ObservableList<NewsModel> news = <NewsModel>[].asObservable();
+  ObservableList<NewsModel> _news = <NewsModel>[].asObservable();
 
   @observable
-  ObservableList<NewsModel> searchableNews = <NewsModel>[].asObservable();
+  ObservableMap<DateTime, List<NewsModel>> presentedNewsMap =
+      ObservableMap.of({});
 
-  @observable
-  ObservableMap<DateTime, List<NewsModel>> newsMap = ObservableMap.of({});
+  final List<NewsModel> _searchableNews = <NewsModel>[];
 
   @observable
   bool isLoading;
@@ -26,47 +26,77 @@ abstract class _HomeStoreBase with Store {
   bool isSearching = false;
 
   List<NewsModel> getSortedNewsByDate(DateTime date) {
-    return newsMap[date]..sort((b, a) => a.createdAt.compareTo(b.createdAt));
+    return presentedNewsMap[date]
+      ..sort((b, a) => a.createdAt.compareTo(b.createdAt));
   }
 
   @action
   void filterNews(String text) {
     if (text == null || text.length < 3) return;
-
     isLoading = true;
-    searchableNews.clear();
-    for (final n in news) {
+    _searchableNews.clear();
+
+    for (final n in _news) {
       for (final stock in n.stocks) {
         if (stock.ticker.contains(text.toUpperCase())) {
-          searchableNews.add(n);
+          _searchableNews.add(n);
         }
       }
 
       if (n.title.toUpperCase().contains(text.toUpperCase()) ||
           n.websiteName.toUpperCase().contains(text.toUpperCase())) {
-        searchableNews.add(n);
+        _searchableNews.add(n);
       }
     }
+
+    final newMap = groupBy(
+        _searchableNews,
+        (obj) => DateFormat('dd/MM/yyyy')
+            .parse(DateFormat('dd/MM/yyyy').format(obj.createdAt)));
+    presentedNewsMap.clear();
+    presentedNewsMap.addAll(newMap);
+
     isLoading = false;
   }
 
   @action
+  void filterByDate(DateTime initial, DateTime end) {
+    if (initial == null || end == null) return;
+    _searchableNews.clear();
+
+    for (final n in _news) {
+      if (n.createdAt.isAfter(initial) && n.createdAt.isBefore(end)) {
+        _searchableNews.add(n);
+      }
+    }
+
+    final newMap = groupBy(
+        _searchableNews,
+        (obj) => DateFormat('dd/MM/yyyy')
+            .parse(DateFormat('dd/MM/yyyy').format(obj.createdAt)));
+    presentedNewsMap.clear();
+    presentedNewsMap.addAll(newMap);
+  }
+
+  @action
   void clearSearchFilter() {
-    searchableNews.clear();
-    news.forEach(searchableNews.add);
+    final newMap = groupBy(
+        _news,
+        (obj) => DateFormat('dd/MM/yyyy')
+            .parse(DateFormat('dd/MM/yyyy').format(obj.createdAt)));
+    presentedNewsMap.clear();
+    presentedNewsMap.addAll(newMap);
     isSearching = false;
   }
 
   @action
   void addNews(NewsModel news) {
-    this.news.add(news);
-    searchableNews.add(news);
+    _news.add(news);
   }
 
   @action
   void emptyNews() {
-    news.clear();
-    searchableNews.clear();
+    _news.clear();
   }
 
   @action
@@ -82,7 +112,7 @@ abstract class _HomeStoreBase with Store {
           serverNews,
           (obj) => DateFormat('dd/MM/yyyy')
               .parse(DateFormat('dd/MM/yyyy').format(obj.createdAt)));
-      newsMap.addAll(newMap);
+      presentedNewsMap.addAll(newMap);
     } catch (e) {
       DioErrorHandler.handle(e);
     } finally {

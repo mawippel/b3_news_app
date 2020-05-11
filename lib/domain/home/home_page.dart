@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 
 class HomePage extends StatelessWidget {
   HomePage() {
@@ -174,6 +175,12 @@ class HomePage extends StatelessWidget {
                         prefixIcon: IconButton(
                           icon: Icon(Icons.close),
                           onPressed: () {
+                            // https://github.com/flutter/flutter/issues/47343#issuecomment-570432119
+                            final currentFocus =
+                                FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
                             searchBarController.clear();
                             mainStore.homeStore.clearSearchFilter();
                           },
@@ -181,6 +188,24 @@ class HomePage extends StatelessWidget {
                         hintText: 'Pesquise pela Notícia ou Papel...',
                       ),
                     ),
+                  ),
+                if (mainStore.homeStore.isSearching)
+                  IconButton(
+                    color: B3NewsColors.lightYellow,
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () async {
+                      final picked = await DateRangePicker.showDatePicker(
+                          context: context,
+                          initialFirstDate:
+                              DateTime.now().subtract(const Duration(days: 7)),
+                          initialLastDate: DateTime.now(),
+                          firstDate: DateTime(2015),
+                          lastDate: DateTime(2021));
+                      if (picked != null && picked.length == 2) {
+                        mainStore.homeStore.filterByDate(
+                            picked[0], picked[1].add(const Duration(days: 1)));
+                      }
+                    },
                   ),
                 if (!mainStore.homeStore.isSearching)
                   const Text('Últimas Notícias'),
@@ -208,10 +233,12 @@ class HomePage extends StatelessWidget {
                 return mainStore.homeStore.fetchNews(displayLoading: false);
               },
               child: ListView.builder(
-                itemCount: mainStore.homeStore.newsMap.keys.toList().length,
+                itemCount:
+                    mainStore.homeStore.presentedNewsMap.keys.toList().length,
                 itemBuilder: (context, index) {
-                  final mapKeys = mainStore.homeStore.newsMap.keys.toList()
-                    ..sort((b, a) => a.compareTo(b));
+                  final mapKeys = mainStore.homeStore.presentedNewsMap.keys
+                      .toList()
+                        ..sort((b, a) => a.compareTo(b));
                   return _buildDateDivider(mapKeys[index]);
                 },
               ),

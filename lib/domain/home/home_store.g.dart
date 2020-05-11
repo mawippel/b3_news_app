@@ -9,38 +9,38 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeStore on _HomeStoreBase, Store {
-  final _$newsAtom = Atom(name: '_HomeStoreBase.news');
+  final _$_newsAtom = Atom(name: '_HomeStoreBase._news');
 
   @override
-  ObservableList<NewsModel> get news {
-    _$newsAtom.context.enforceReadPolicy(_$newsAtom);
-    _$newsAtom.reportObserved();
-    return super.news;
+  ObservableList<NewsModel> get _news {
+    _$_newsAtom.context.enforceReadPolicy(_$_newsAtom);
+    _$_newsAtom.reportObserved();
+    return super._news;
   }
 
   @override
-  set news(ObservableList<NewsModel> value) {
-    _$newsAtom.context.conditionallyRunInAction(() {
-      super.news = value;
-      _$newsAtom.reportChanged();
-    }, _$newsAtom, name: '${_$newsAtom.name}_set');
+  set _news(ObservableList<NewsModel> value) {
+    _$_newsAtom.context.conditionallyRunInAction(() {
+      super._news = value;
+      _$_newsAtom.reportChanged();
+    }, _$_newsAtom, name: '${_$_newsAtom.name}_set');
   }
 
-  final _$searchableNewsAtom = Atom(name: '_HomeStoreBase.searchableNews');
+  final _$presentedNewsMapAtom = Atom(name: '_HomeStoreBase.presentedNewsMap');
 
   @override
-  ObservableList<NewsModel> get searchableNews {
-    _$searchableNewsAtom.context.enforceReadPolicy(_$searchableNewsAtom);
-    _$searchableNewsAtom.reportObserved();
-    return super.searchableNews;
+  ObservableMap<DateTime, List<NewsModel>> get presentedNewsMap {
+    _$presentedNewsMapAtom.context.enforceReadPolicy(_$presentedNewsMapAtom);
+    _$presentedNewsMapAtom.reportObserved();
+    return super.presentedNewsMap;
   }
 
   @override
-  set searchableNews(ObservableList<NewsModel> value) {
-    _$searchableNewsAtom.context.conditionallyRunInAction(() {
-      super.searchableNews = value;
-      _$searchableNewsAtom.reportChanged();
-    }, _$searchableNewsAtom, name: '${_$searchableNewsAtom.name}_set');
+  set presentedNewsMap(ObservableMap<DateTime, List<NewsModel>> value) {
+    _$presentedNewsMapAtom.context.conditionallyRunInAction(() {
+      super.presentedNewsMap = value;
+      _$presentedNewsMapAtom.reportChanged();
+    }, _$presentedNewsMapAtom, name: '${_$presentedNewsMapAtom.name}_set');
   }
 
   final _$isLoadingAtom = Atom(name: '_HomeStoreBase.isLoading');
@@ -99,6 +99,16 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   }
 
   @override
+  void filterByDate(DateTime initial, DateTime end) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction();
+    try {
+      return super.filterByDate(initial, end);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void clearSearchFilter() {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction();
     try {
@@ -131,7 +141,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   @override
   String toString() {
     final string =
-        'news: ${news.toString()},searchableNews: ${searchableNews.toString()},isLoading: ${isLoading.toString()},isSearching: ${isSearching.toString()}';
+        'presentedNewsMap: ${presentedNewsMap.toString()},isLoading: ${isLoading.toString()},isSearching: ${isSearching.toString()}';
     return '{$string}';
   }
 }
