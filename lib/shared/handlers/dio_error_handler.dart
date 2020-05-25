@@ -8,9 +8,9 @@ class DioErrorHandler {
       content: Text('$e'),
       confirm: const FlatButton(
         onPressed: Get.back,
-        child: Text('Close'),
+        child: Text('Fechar'),
       ),
-      color: Colors.black.withOpacity(0.6),
+      backgroundColor: Colors.black.withOpacity(0.6),
     );
   }
 }
