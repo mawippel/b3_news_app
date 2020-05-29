@@ -1,6 +1,4 @@
-import 'package:b3_news_app/utils/url_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TickerHistory extends StatefulWidget {
@@ -22,18 +20,6 @@ class _TickerHistoryState extends State<TickerHistory> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text('Cotação ${widget.ticker}'),
-            // FlatButton(
-            //   onPressed: () => URLLauncher.launchURL('https://br.advfn.com/bolsa-de-valores/bovespa/ITSA4/historico'),
-            //   child: Row(
-            //     children: <Widget>[
-            //       Icon(Icons.history),
-            //       const SizedBox(
-            //         width: 4,
-            //       ),
-            //       const Text('Hist. Cotações'),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),
