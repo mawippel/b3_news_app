@@ -39,13 +39,17 @@ abstract class _HomeStoreBase with Store {
     for (final n in _news) {
       for (final stock in n.stocks) {
         if (stock.ticker.contains(text.toUpperCase())) {
-          _searchableNews.add(n);
+          if (!_searchableNews.contains(n)) {
+            _searchableNews.add(n);
+          }
         }
       }
 
       if (n.title.toUpperCase().contains(text.toUpperCase()) ||
           n.websiteName.toUpperCase().contains(text.toUpperCase())) {
-        _searchableNews.add(n);
+        if (!_searchableNews.contains(n)) {
+          _searchableNews.add(n);
+        }
       }
     }
 

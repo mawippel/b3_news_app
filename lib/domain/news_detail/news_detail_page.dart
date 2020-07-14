@@ -30,17 +30,25 @@ class NewsDetailPage extends StatelessWidget {
           (paragraph) => paragraph.sentiment);
       final paragraphsLength = mainStore.newsDetailStore.news.paragraphs.length;
 
+      var positives = map[Sentiment.POSITIVE]?.length;
+      var negatives = map[Sentiment.NEGATIVE]?.length;
+
+      if (positives == negatives) {
+        positives += 1;
+        negatives -= 1;
+      }
+
       return [
         if (map[Sentiment.POSITIVE]?.isNotEmpty ?? false)
           ChartDataModel(
             charts.MaterialPalette.green.shadeDefault,
-            map[Sentiment.POSITIVE]?.length,
+            positives,
             paragraphsLength,
           ),
         if (map[Sentiment.NEGATIVE]?.isNotEmpty ?? false)
           ChartDataModel(
             charts.MaterialPalette.red.shadeDefault,
-            map[Sentiment.NEGATIVE]?.length,
+            negatives,
             paragraphsLength,
           ),
       ];
@@ -142,8 +150,8 @@ class NewsDetailPage extends StatelessWidget {
               children: <Widget>[
                 const Text('InfoMoney'),
                 FlatButton(
-                  onPressed: () =>
-                      URLLauncher.launchURL(mainStore.newsDetailStore.news.href),
+                  onPressed: () => URLLauncher.launchURL(
+                      mainStore.newsDetailStore.news.href),
                   child: Row(
                     children: <Widget>[
                       Icon(
